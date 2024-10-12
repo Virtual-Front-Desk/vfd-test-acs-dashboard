@@ -40,7 +40,7 @@ function App() {
       callAgent.join(
         {
           meetingLink:
-            "https://teams.microsoft.com/l/meetup-join/19%3ameeting_MDcwYjIxMGMtM2ZjYS00ZTM3LWI5NzQtYmEzOWFhYmY2MWY2%40thread.v2/0?context=%7b%22Tid%22%3a%22bb1c47f2-f592-4c4e-b84b-f59f8511d17c%22%2c%22Oid%22%3a%222553e2ae-8206-4064-9bc3-d3ae9ef8f001%22%7d",
+            "https://teams.microsoft.com/l/meetup-join/19%3ameeting_NzhlMzE4YWMtMzYyMy00M2RiLWE2ZjYtODJkOWRiZGQ0ZmMw%40thread.v2/0?context=%7b%22Tid%22%3a%22bb1c47f2-f592-4c4e-b84b-f59f8511d17c%22%2c%22Oid%22%3a%222553e2ae-8206-4064-9bc3-d3ae9ef8f001%22%7d",
         },
         {
           videoOptions: localVideoStream2
