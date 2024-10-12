@@ -32,6 +32,8 @@ const VideoCallComponent: FC = () => {
     } catch (e) {
       console.log("error", e);
     }
+
+    window.location.reload();
   }, [endCallProps]);
 
   const remoteVideoViewOptions = {

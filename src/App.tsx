@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { getAcsAuth } from "./api";
 import {
   CallAgentProvider,
@@ -17,19 +17,12 @@ import { AzureCommunicationTokenCredential } from "@azure/communication-common";
 import VideoCallComponent from "./components/VideoCallComponent";
 
 function App() {
-  const [callerId, setCallerId] = useState<string>("");
-  const [callerToken, setCallerToken] = useState<string>("");
   const [selectedCamera, setSelectedCamera] = useState<string>("");
 
   const [statefulCallClient, setStatefulCallClient] =
     useState<StatefulCallClient | null>(null);
   const [callAgent, setCallAgent] = useState<CallAgent | null>(null);
   const [call, setCall] = useState<Call | null>(null);
-
-  const tokenCredential = useMemo(() => {
-    if (!callerToken) return null;
-    return new AzureCommunicationTokenCredential(callerToken);
-  }, [callerToken]);
 
   const handleSetCall = async (
     statefulCallClient: StatefulCallClient,
@@ -101,9 +94,10 @@ function App() {
     }
   };
 
-  const handleSetCallClient = async () => {
-    if (!tokenCredential) return;
-
+  const handleSetCallClient = async (
+    tokenCredential: AzureCommunicationTokenCredential,
+    callerId: string
+  ) => {
     const statefulCallClient = createStatefulCallClient({
       userId: { communicationUserId: callerId },
     });
@@ -123,14 +117,15 @@ function App() {
   };
 
   const handleJoinCall = async () => {
-    const acsAuth = await getAcsAuth("test_auth");
+    const acsAuth = await getAcsAuth("DashboardData");
 
     if (acsAuth.userId && acsAuth.token) {
-      setCallerId(acsAuth.userId);
-      setCallerToken(acsAuth.token);
-    }
+      const tokenCredential = new AzureCommunicationTokenCredential(
+        acsAuth.token
+      );
 
-    handleSetCallClient();
+      handleSetCallClient(tokenCredential, acsAuth.userId);
+    }
   };
 
   return (
@@ -138,15 +133,9 @@ function App() {
       <h1 className="text-center mt-10 text-2xl font-bold">
         Test ACS call quality - Dashboard side
       </h1>
-      <div className="w-full flex justify-center items-center mt-16">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleJoinCall}
-        >
-          Join call
-        </button>
 
-        {callerId && callerToken && statefulCallClient && callAgent && call && (
+      <div className="w-full flex justify-center items-center mt-16 h-[80vh]">
+        {statefulCallClient && callAgent && call ? (
           <FluentThemeProvider>
             <CallClientProvider callClient={statefulCallClient}>
               <CallAgentProvider callAgent={callAgent}>
@@ -156,6 +145,13 @@ function App() {
               </CallAgentProvider>
             </CallClientProvider>
           </FluentThemeProvider>
+        ) : (
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleJoinCall}
+          >
+            Join call
+          </button>
         )}
       </div>
     </>
