@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getAcsAuth } from "./api";
 import {
   CallAgentProvider,
@@ -18,11 +18,18 @@ import VideoCallComponent from "./components/VideoCallComponent";
 
 function App() {
   const [selectedCamera, setSelectedCamera] = useState<string>("");
+  const [callId, setCallId] = useState<string>("");
 
   const [statefulCallClient, setStatefulCallClient] =
     useState<StatefulCallClient | null>(null);
   const [callAgent, setCallAgent] = useState<CallAgent | null>(null);
   const [call, setCall] = useState<Call | null>(null);
+
+  useEffect(() => {
+    if (call && !callId) {
+      setCallId(call.id);
+    }
+  }, [call]);
 
   const handleSetCall = async (
     statefulCallClient: StatefulCallClient,
@@ -133,6 +140,9 @@ function App() {
       <h1 className="text-center mt-10 text-2xl font-bold">
         Test ACS call quality - Dashboard side
       </h1>
+      {callId && (
+        <p className="text-center mt-5 text-lg font-bold">Call ID: {callId}</p>
+      )}
 
       <div className="w-full flex justify-center items-center mt-16 h-[80vh]">
         {statefulCallClient && callAgent && call ? (
