@@ -19,7 +19,11 @@ const classes = {
   stackContainer: "w-full h-[9rem] md:h-[19rem] lg:h-[29rem] xl:h-[39rem]",
 };
 
-const VideoCallComponent: FC = () => {
+interface VideoCallComponentProps {
+  saveLogFile: () => Promise<void>;
+}
+
+const VideoCallComponent: FC<VideoCallComponentProps> = ({ saveLogFile }) => {
   const videoGalleryProps = usePropsFor(VideoGallery);
   const endCallProps = usePropsFor(EndCallButton);
   const cameraProps = usePropsFor(CameraButton);
@@ -27,6 +31,7 @@ const VideoCallComponent: FC = () => {
   const screenShareProps = usePropsFor(ScreenShareButton);
 
   const onHangup = useCallback(async () => {
+    await saveLogFile();
     try {
       await endCallProps.onHangUp();
     } catch (e) {
