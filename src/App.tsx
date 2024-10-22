@@ -11,7 +11,6 @@ import {
 import {
   Call,
   CallAgent,
-  CallClient,
   LocalVideoStream,
 } from "@azure/communication-calling";
 import { AzureCommunicationTokenCredential } from "@azure/communication-common";
@@ -149,17 +148,16 @@ function App() {
     }
   };
 
-    const downloadLogString = async () => {
-      const blob = new Blob([logString], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "log.txt";
-      a.click();
+  const downloadLogString = async () => {
+    const blob = new Blob([logString], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "log.txt";
+    a.click();
 
-      setLogString("");
-    };
-
+    setLogString("");
+  };
 
   return (
     <>
