@@ -16,14 +16,14 @@ initializeIcons();
 registerIcons({ icons: DEFAULT_COMPOSITE_ICONS });
 
 const classes = {
-  stackContainer: "w-full h-[9rem] md:h-[19rem] lg:h-[29rem] xl:h-[39rem]",
+  stackContainer: "h-[80vh] w-full",
 };
 
 interface VideoCallComponentProps {
-  saveLogFile: () => Promise<void>;
+  handleHangUp: () => void;
 }
 
-const VideoCallComponent: FC<VideoCallComponentProps> = ({ saveLogFile }) => {
+const VideoCallComponent: FC<VideoCallComponentProps> = ({ handleHangUp }) => {
   const videoGalleryProps = usePropsFor(VideoGallery);
   const endCallProps = usePropsFor(EndCallButton);
   const cameraProps = usePropsFor(CameraButton);
@@ -31,14 +31,13 @@ const VideoCallComponent: FC<VideoCallComponentProps> = ({ saveLogFile }) => {
   const screenShareProps = usePropsFor(ScreenShareButton);
 
   const onHangup = useCallback(async () => {
-    await saveLogFile();
     try {
       await endCallProps.onHangUp();
     } catch (e) {
       console.log("error", e);
     }
 
-    window.location.reload();
+    await handleHangUp();
   }, [endCallProps]);
 
   const remoteVideoViewOptions = {

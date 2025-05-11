@@ -11,13 +11,3 @@ export const getAcsAuth = async (stationCode: string) => {
     return error;
   }
 };
-
-export const getAcsToken = async () => {
-  try {
-    const response = await axios.get("/acs");
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
