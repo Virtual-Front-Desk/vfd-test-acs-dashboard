@@ -257,7 +257,7 @@ function App() {
       });
     }
 
-    window.location.href = 'myapp://?callEnded=true&callKey=' + getMeetingLinkAndTokenFromUrl().callKey;
+    window.location.href = 'vfddashboardapp://?callEnded=true&callKey=' + getMeetingLinkAndTokenFromUrl().callKey;
   }
 
   if (isCallEnded) {
